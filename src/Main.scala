@@ -15,8 +15,12 @@ import scala.concurrent.Future
 
 object Main extends App {
   println("Hi , this program is designed to listen to the files and processed it and convert it into database ")
+  println("Please provide first the directory you want the app to listen  ")
+  val path =scala.io.StdIn.readLine()
 
-  val listener = new CsvDirectoryListener("C:\\Users\\20101\\Desktop\\output\\rawData")
+  //val listener = new CsvDirectoryListener("C:\\Users\\20101\\Desktop\\output\\rawData")
+  val listener = new CsvDirectoryListener(path)
+
   listener.start()
 
   class CsvDirectoryListener(directoryPath: String) {
