@@ -1,7 +1,7 @@
 
 #  DiscountEngineCSV_to_Database
 
-This is a Scala program that serves as a rule engine for qualifying orders' transactions to discounts based on a set of qualifying rules. It automatically calculates the proper discount based on the following calculation rules:
+This is a Scala program that serves as a rule engine for qualifying orders' transactions to discounts based on a set of qualifying rules. It automatically calculates the proper discount based on the calculation rules.
 
 
 ## Features
