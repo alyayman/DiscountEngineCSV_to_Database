@@ -2,12 +2,12 @@
 
 import scala.collection.immutable.List
 import java.io.{FileWriter, PrintWriter}
+import java.lang.Integer
 import java.text.SimpleDateFormat
 import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
 import java.nio.file._
 import scala.collection.JavaConverters._
-
 import java.sql.DriverManager
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -77,7 +77,7 @@ object Main extends App {
                   Files.delete(filePath)
 
                   // Print the execution time
-                  val endTime = System.currentTimeMillis()
+                  val endTime = System.nanoTime()
                   val executionTime = (endTime - startTime) / 1000000.0 / 1000 // Convert to milliseconds
                   println(s"Execution time: $executionTime s")
 
@@ -103,8 +103,8 @@ object Main extends App {
   // This function calculates the discount based on a set of rules for a given list of strings
   def avg_Discount(discountList: List[String]): Float = {
 
-    // Rule 1: If the difference between the start date and end date is less than 30 days, apply a 30% discount
-    def rule1(startDate: String, endDate: String): Integer = {
+    // Rule 1: If the difference between the start date and end date is less than 30 days, apply a (30-days_difference)% discount
+    def rule1(startDate: String, endDate: String): Int = {
       val format = new SimpleDateFormat("yyyy-MM-dd")
       val format2 = new SimpleDateFormat("yyyy-MM-dd")
 
@@ -122,7 +122,7 @@ object Main extends App {
     }
 
     // Rule 6: If the payment method is Visa, apply a 5% discount
-    def rule6(inputString: String): Integer = {
+    def rule6(inputString: String): Int = {
       if (inputString.toLowerCase.trim == "visa") {
          5
       } else {
@@ -131,7 +131,7 @@ object Main extends App {
     }
 
     // Rule 5: If the purchase was made through the app, apply a discount based on the quantity purchased
-    def rule5(quantity: String, through: String): Integer = {
+    def rule5(quantity: String, through: String): Int = {
       try {
         if (through.toLowerCase.trim == "app") {
           // If the quantity is a multiple of 5, apply no discount
@@ -148,7 +148,7 @@ object Main extends App {
     }
 
     // Rule 3: If the purchase was made on March 23, 2023, apply a 50% discount
-    def rule3(dateString: String): Integer = {
+    def rule3(dateString: String): Int = {
       val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
       val date = LocalDate.parse(dateString.trim, formatter)
 
@@ -160,7 +160,7 @@ object Main extends App {
     }
 
     // Rule 4: Apply a discount based on the number of units purchased
-    def rule4(unitsString: String): Integer = {
+    def rule4(unitsString: String): Int = {
       if (unitsString.toIntOption.isDefined) {
         val numunits = unitsString.toInt
         if (numunits >= 6 && numunits <= 9) {
@@ -168,7 +168,7 @@ object Main extends App {
         } else if (numunits >= 10 && numunits <= 14) {
           7
         } else if (numunits >= 15) {
-          1
+          10
         } else {
           0
         }
@@ -178,7 +178,7 @@ object Main extends App {
     }
 
     // Rule 2: Apply a discount based on the name of the product
-    def rule2(productName: String): Integer = {
+    def rule2(productName: String): Int = {
       val cheeseDiscount = 10
       val wineDiscount = 5
 
@@ -199,8 +199,11 @@ object Main extends App {
     // put all the discounts into one list to calculate the largest two numbers
     val listOfDiscounts = List(rule1(col0, col2), rule2(col1), rule3(col0), rule4(col3), rule5(col3, col5), rule6(col6))
     val list = listOfDiscounts.sorted.takeRight(2)
-    val endDiscounts = (list(0) + list(1)) / 2.0.toFloat
-    return endDiscounts
+    list(0) match {
+      case 0 => (list(1)) / 1.0.toFloat
+      case _ => (list(0) + list(1)) / 2.0.toFloat
+    }
+
   }
 
   // This function takes a list of strings containing data of a single row from a CSV file and the function to calculate average discount
