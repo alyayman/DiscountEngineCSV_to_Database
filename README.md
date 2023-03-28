@@ -91,5 +91,5 @@ scalac DiscountEngineCSV_to_Database.scala
 ## Usage
 Start the program by running the following command:
 ```
-scala Main
+scala Main Directory
 ```
