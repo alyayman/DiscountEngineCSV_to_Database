@@ -93,3 +93,8 @@ Start the program by running the following command:
 ```
 scala Main Directory
 ```
+##Demo
+
+https://user-images.githubusercontent.com/11719167/228658775-009055f0-5c8a-440a-8b4d-8945b6c9fd1a.mp4
+
+
